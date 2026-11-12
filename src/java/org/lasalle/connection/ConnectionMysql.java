@@ -16,14 +16,18 @@ public class ConnectionMysql {
     private Connection conn;
 
     public Connection open() {
-        String url = "jdbc:mysql://mysql-6400ebc-ruiztorresluisgerardo-1b9e.a.aivencloud.com:11991/defaultdb?sslMode=REQUIRED&allowPublicKeyRetrieval=TRUE";
-        String user = "avnadmin";
-        String password = "AVNS_7Ni3-2Qz3uy0Aeu9DIX";
+        String host = "mysql-6400ebc-ruiztorresluisgerardo-1b9e.a.aivencloud.com";
+        int port = 11991;
         String bdName = "gluco_api";
-        String parametros = "?allowPublicKeyRetrieval=true&useSSL=false&useUnicode=true&characterEncoding=utf-8";
+        String url = "jdbc:mysql://" + host + ":" + port + "/" + bdName
+                + "?sslMode=REQUIRED"
+                + "&allowPublicKeyRetrieval=TRUE"
+                + "&useUnicode=true&characterEncoding=utf-8";
+        String user = System.getenv().getOrDefault("DB_USER", "avnadmin");
+        String password = System.getenv().getOrDefault("DB_PASSWORD", "AVNS_7Ni3-2Qz3uy0Aeu9DIX");
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-            conn = DriverManager.getConnection(url + parametros, user, password);
+            conn = DriverManager.getConnection(url, user, password);
             return conn;
         } catch (Exception e) {
             e.printStackTrace();
