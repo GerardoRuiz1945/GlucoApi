@@ -1,5 +1,5 @@
 # Usamos Java 17 (más compatible con NetBeans actual)
-FROM tomcat:10.1-jdk17-openjdk-slim
+FROM tomcat:10.1-jdk21-openjdk-slim
 
 # Limitamos la memoria RAM para que Render no mate el proceso (Max 256MB)
 ENV JAVA_OPTS="-Xms128m -Xmx256m"
