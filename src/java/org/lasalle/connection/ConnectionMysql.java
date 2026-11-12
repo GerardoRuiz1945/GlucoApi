@@ -16,7 +16,7 @@ public class ConnectionMysql {
     private Connection conn;
 
     public Connection open() {
-        String url = "jdbc:mysql://mysql-6400ebc-ruiztorresluisgerardo-1b9e.a.aivencloud.com:11991/defaultdb?sslMode=REQUIRED&allowPublicKeyRetrieval=true";
+        String url = "jdbc:mysql://mysql-6400ebc-ruiztorresluisgerardo-1b9e.a.aivencloud.com:11991/defaultdb?sslMode=REQUIRED&allowPublicKeyRetrieval=TRUE";
         String user = "avnadmin";
         String password = "AVNS_7Ni3-2Qz3uy0Aeu9DIX";
         String bdName = "gluco_api";
