@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<!--
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit this template
+-->
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GlucoAPI - Control de Glucosa</title>
+    <style>
+        /* Variables de color */
+        :root {
+            --primary-blue: #0077b6;
+            --dark-blue: #03045e;
+            --accent-red: #d90429;
+            --light-red: #ef233c;
+            --text-light: #ffffff;
+            --glass-bg: rgba(255, 255, 255, 0.1);
+            --glass-border: rgba(255, 255, 255, 0.2);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            /* Fondo con imagen de Pixabay y un gradiente azul oscuro superpuesto */
+            background: linear-gradient(135deg, rgba(3, 4, 94, 0.9), rgba(0, 119, 182, 0.8)), 
+                        url('https://cdn.pixabay.com/photo/2016/11/09/15/27/dna-1811955_1280.jpg') no-repeat center center fixed;
+            background-size: cover;
+            color: var(--text-light);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* Utilidad Glassmorphism */
+        .glass {
+            background: var(--glass-bg);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Navbar */
+        header {
+            width: 100%;
+            padding: 20px 50px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-radius: 0 0 20px 20px;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: var(--text-light);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo span {
+            color: var(--light-red);
+        }
+
+        /* Hero Section */
+        .hero {
+            text-align: center;
+            padding: 80px 20px;
+            max-width: 800px;
+            margin-top: 40px;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            line-height: 1.2;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 40px;
+            color: #e0e0e0;
+        }
+
+        .btn {
+            padding: 15px 35px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: var(--text-light);
+            background: var(--accent-red);
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            box-shadow: 0 4px 15px rgba(217, 4, 41, 0.4);
+        }
+
+        .btn:hover {
+            background: var(--light-red);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(239, 35, 60, 0.6);
+        }
+
+        /* Features / API Endpoints Section */
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            max-width: 1100px;
+            width: 100%;
+            padding: 20px;
+            margin-bottom: 80px;
+        }
+
+        .card {
+            padding: 40px 30px;
+            text-align: left;
+            transition: all 0.4s ease;
+        }
+
+        /* Efecto Hover con Shadow en las tarjetas */
+        .card:hover {
+            transform: translateY(-10px);
+            background: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4), 0 0 20px rgba(0, 119, 182, 0.5);
+            border-color: rgba(255, 255, 255, 0.4);
+        }
+
+        .card-icon {
+            width: 60px;
+            height: 60px;
+            background: var(--primary-blue);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .card-icon img {
+            width: 30px;
+            filter: brightness(0) invert(1);
+        }
+
+        .card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: #fff;
+        }
+
+        .card p {
+            color: #dcdcdc;
+            line-height: 1.6;
+        }
+
+        .endpoint {
+            display: inline-block;
+            margin-top: 15px;
+            padding: 5px 10px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 8px;
+            font-family: monospace;
+            color: #48cae4;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 2.5rem; }
+            header { flex-direction: column; gap: 15px; }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="glass">
+        <a href="#" class="logo">
+            <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#ef233c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+            Gluco<span>API</span>
+        </a>
+        <nav>
+            <a href="#" class="btn" style="padding: 10px 20px; font-size: 0.9rem;">Documentación</a>
+        </nav>
+    </header>
+
+    <section class="hero">
+        <h1>Monitoreo Inteligente de Glucosa</h1>
+        <p>Potencia tus aplicaciones de salud con nuestra API RESTful. Registra, analiza y sincroniza los niveles de glucosa en la sangre de tus usuarios afiliados de forma segura y en tiempo real.</p>
+        <a href="#endpoints" class="btn">Comenzar a Integrar</a>
+    </section>
+
+    <section id="endpoints" class="features">
+        
+        <!-- Tarjeta 1 -->
+        <div class="card glass">
+            <div class="card-icon">
+                <!-- Icono representativo (Corazón/Salud) -->
+                <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+            </div>
+            <h3>Registro de Lecturas</h3>
+            <p>Guarda nuevas mediciones de glucosa (mg/dL) asociadas al perfil de cada usuario afiliado. Incluye fecha, hora y contexto (ayunas, postprandial).</p>
+            <span class="endpoint">POST /api/v1/glucose</span>
+        </div>
+
+        <!-- Tarjeta 2 -->
+        <div class="card glass">
+            <div class="card-icon" style="background: var(--accent-red);">
+                <!-- Icono representativo (Estadísticas) -->
+                <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+            </div>
+            <h3>Historial y Estadísticas</h3>
+            <p>Obtén el histórico de niveles de azúcar en la sangre y calcula promedios semanales o mensuales para la generación de reportes médicos.</p>
+            <span class="endpoint">GET /api/v1/glucose/history</span>
+        </div>
+
+        <!-- Tarjeta 3 -->
+        <div class="card glass">
+            <div class="card-icon">
+                <!-- Icono representativo (Usuarios) -->
+                <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+            </div>
+            <h3>Gestión de Afiliados</h3>
+            <p>Administra los perfiles de los pacientes, genera tokens de acceso seguros y mantén la privacidad de los datos clínicos de extremo a extremo.</p>
+            <span class="endpoint">GET /api/v1/affiliates/{id}</span>
+        </div>
+
+    </section>
+
+</body>
+</html>
